@@ -3,6 +3,8 @@ package shoppingListApp;
 import java.util.ArrayList; //for creating the shopping list
 import java.io.BufferedWriter; //for writing the file
 import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Scanner; //for user input
 
 import java.io.IOException;
@@ -49,6 +51,32 @@ public class Main {
 					bw.newLine();
 				}
 				
+				System.out.println("Here is the current content of your list:");
+				System.out.println(shopList);
+				System.out.println("\nIs there anything you would like to remove from the list?");
+				String yesNo = input.nextLine().toUpperCase();
+				
+				if (yesNo.contains("YE")) {
+					System.out.println("What would you like to remove?");
+					String remove = input.nextLine();
+					
+					try (BufferedReader br = new BufferedReader(new FileReader("Shopping List.txt"))){
+						String line;
+						while ((line = br.readLine()) != null) {
+							if (line.equals(remove)) {
+								continue;
+							}
+							else {
+								bw.write(line);
+							}
+						}
+					} catch (Exception e) {
+						System.out.println("Error removing item from list");
+						e.printStackTrace();
+					}
+					
+				}
+				
 			} catch (IOException e) {
 				
 				System.out.println("Error caused during file writing");
@@ -72,9 +100,10 @@ public class Main {
 				e.printStackTrace();
 				
 			}
-			
-			System.out.println(shopList);
 		}
+		
+		
+		
 	}
 
 }
