@@ -3,8 +3,6 @@ package shoppingListApp;
 import java.util.ArrayList; //for creating the shopping list
 import java.io.BufferedWriter; //for writing the file
 import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Scanner; //for user input
 
 import java.io.IOException;
@@ -80,30 +78,31 @@ public class Main {
 		String yesNo = input.nextLine().toUpperCase();
 		
 		if (yesNo.contains("YE")) {
-			System.out.println("What would you like to remove?");
-			String remove = input.nextLine().toUpperCase();
+			System.out.println("How many items would you like to remove?\nPlease enter your answer as a number IE 1 rather than one");
+			int amountRemove = input.nextInt();
 			
-			try (BufferedReader br = new BufferedReader(new FileReader("Shopping List.txt"))){
-				String line;
-				while ((line = br.readLine()) != null) {
-					if (line.equals(remove)) {
-						continue;
-					}
-					else {
-						try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt"))){
-							bw.write(line);
-							bw.newLine(); //currently while loop is overwriting this each time so the only thing that remains in the file is the last element of the list
-						} catch (Exception e) {
-							System.out.println("Error in the new list overwriting the old one");
-							e.printStackTrace();
-						}
+			while (amountRemove >= 0) {
+				System.out.println("What would you like to remove?");
+				String remove = input.nextLine().toUpperCase();
+				
+				System.out.println(shopList);
+				for (int i = 0; i < shopList.size(); i++) {
+					if (shopList.get(i).equals(remove)) {
+						shopList.remove(i);
 					}
 				}
-			} catch (Exception e) {
-				System.out.println("Error removing item from list");
-				e.printStackTrace();
+				System.out.println(shopList);
+				
+				try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt"))){
+					for (String item : shopList) {
+						bw.write(item);
+						bw.newLine();
+					}
+				} catch (Exception e) {
+					System.out.println("Removing error");
+				}
+				amountRemove = amountRemove - 1;
 			}
-			
 		}
 		
 	}
