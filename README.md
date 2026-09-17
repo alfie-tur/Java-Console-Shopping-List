@@ -1,0 +1,1 @@
+This project will be a test of some newer skills I have picked up since my previous project. I will attempt to use file writing and data structures to create a console based shopping list program that creates a text document list for you afterwards
