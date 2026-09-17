@@ -51,40 +51,12 @@ public class Main {
 					bw.newLine();
 				}
 				
-				System.out.println("Here is the current content of your list:");
-				System.out.println(shopList);
-				System.out.println("\nIs there anything you would like to remove from the list?");
-				String yesNo = input.nextLine().toUpperCase();
-				
-				if (yesNo.contains("YE")) {
-					System.out.println("What would you like to remove?");
-					String remove = input.nextLine();
-					
-					try (BufferedReader br = new BufferedReader(new FileReader("Shopping List.txt"))){
-						String line;
-						while ((line = br.readLine()) != null) {
-							if (line.equals(remove)) {
-								continue;
-							}
-							else {
-								bw.write(line);
-							}
-						}
-					} catch (Exception e) {
-						System.out.println("Error removing item from list");
-						e.printStackTrace();
-					}
-					
-				}
-				
 			} catch (IOException e) {
 				
 				System.out.println("Error caused during file writing");
 				e.printStackTrace();
 				
 			}
-			
-			System.out.println(shopList);
 		}
 		else if (newOld.contains("NEW")) {
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt"))){
@@ -102,7 +74,37 @@ public class Main {
 			}
 		}
 		
+		System.out.println("Here is the current content of your list:");
+		System.out.println(shopList);
+		System.out.println("\nIs there anything you would like to remove from the list?");
+		String yesNo = input.nextLine().toUpperCase();
 		
+		if (yesNo.contains("YE")) {
+			System.out.println("What would you like to remove?");
+			String remove = input.nextLine().toUpperCase();
+			
+			try (BufferedReader br = new BufferedReader(new FileReader("Shopping List.txt"))){
+				String line;
+				while ((line = br.readLine()) != null) {
+					if (line.equals(remove)) {
+						continue;
+					}
+					else {
+						try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt"))){
+							bw.write(line);
+							bw.newLine(); //currently while loop is overwriting this each time so the only thing that remains in the file is the last element of the list
+						} catch (Exception e) {
+							System.out.println("Error in the new list overwriting the old one");
+							e.printStackTrace();
+						}
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("Error removing item from list");
+				e.printStackTrace();
+			}
+			
+		}
 		
 	}
 
