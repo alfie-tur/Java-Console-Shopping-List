@@ -3,6 +3,8 @@ package shoppingListApp;
 import java.util.ArrayList; //for creating the shopping list
 import java.io.BufferedWriter; //for writing the file
 import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Scanner; //for user input
 
 import java.io.IOException;
@@ -41,9 +43,8 @@ public class Main {
 			}
 		}
 		
-		if (newOld.contains("OLD")) {
+		if (newOld.contains("OLD")) { //in here will need to do ArrayList = what's read in the text file so that removing items works in the later part of the code
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt", true))){
-				
 				for (String item : shopList) {
 					bw.write(item);
 					bw.newLine();
@@ -55,6 +56,17 @@ public class Main {
 				e.printStackTrace();
 				
 			}
+			
+			try (BufferedReader br = new BufferedReader(new FileReader("Shopping List.txt"))){
+				String line;
+				shopList.clear();
+				while ((line = br.readLine()) != null) {
+					shopList.add(line);
+				}
+			} catch (Exception e) {
+				System.out.println("Error in reading to output to ArrayList");
+			}
+			
 		}
 		else if (newOld.contains("NEW")) {
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter("Shopping List.txt"))){
